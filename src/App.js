@@ -5,8 +5,10 @@ import Meals from "./components/Meals/Meals";
 function App() {
   return (
     <>
-      <Header/>
-      <Meals/>
+      <Header />
+      <main>
+        <Meals />
+      </main>
     </>
   );
 }
