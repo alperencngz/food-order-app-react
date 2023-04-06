@@ -34,7 +34,7 @@ const AVILABLE_MEALS = [
 function AvailableMeals() {
 
   const mealList = AVILABLE_MEALS.map((meal) => {
-    return <MealIteam key={meal.id} meal={meal} />
+    return <MealIteam key={meal.id} meal={meal} id={meal.id}/>
   })
 
   return (
