@@ -1,28 +1,16 @@
-import {React, useState} from "react";
+import {React} from "react";
 import HeaderCartButton from "./HeaderCartButton";
-
-import Cart from "../Cart/Cart";
 
 import mealsImage from "../../assets/meals.jpg";
 import classes from "./Header.module.css";
 
-function Header() {
-    const [cartModal, setCartModal] = useState(false);
-
-    const openCart = () => {
-        setCartModal(true);
-    }
-
-    const closeCart = () => {
-        setCartModal(false);
-    }
+function Header(props) {
 
     return (
         <>
-            {cartModal? <Cart onClickClose={closeCart}/>: ""}
             <header className={classes.header}>
                 <h1>ReactMeals</h1>
-                <HeaderCartButton onClick={openCart}/>
+                <HeaderCartButton onClick={props.onShowCart}/>
             </header>
             <div className={classes["main-image"]}>
                 <img src={mealsImage} alt="Table full of food" />
