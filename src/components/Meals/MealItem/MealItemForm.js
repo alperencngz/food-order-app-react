@@ -5,13 +5,8 @@ import Input from "../../UI/Input";
 
 function MealItemForm(props) {
 
-    const onSubmit = (event) => {
-        event.preventDefault();
-        console.log(event.input);
-    }
-
     return (
-        <form className={classes.form} onSubmit={onSubmit}>
+        <form className={classes.form}>
             <Input label="Amount" input={{
                 id: 'amount_' + props.id,
                 type: "number",
