@@ -9,6 +9,8 @@ import CheckoutForm from "./CheckoutForm";
 function Cart(props) {
 
     const [isOrdering, setIsOrdering] = useState(false);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [didSubmit, setDidSubmit] = useState(false);
 
     const cartCtx = useContext(CartContext);
 
@@ -29,14 +31,18 @@ function Cart(props) {
         setIsOrdering(true);
     }
 
-    const submitOrderHandler = (userData) => {
-        fetch("https://food-order-app-1f0b9-default-rtdb.firebaseio.com/orders.json", {
+    const submitOrderHandler = async (userData) => {
+        setIsSubmitting(true);
+        await fetch("https://food-order-app-1f0b9-default-rtdb.firebaseio.com/orders.json", {
             method: "POST",
             body: JSON.stringify({
                 user: userData,
                 orderedItems: cartCtx.items
             })
         });
+        setIsSubmitting(false);
+        setDidSubmit(true);
+        cartCtx.clearCart();
     };
 
     const cartItems = (
@@ -66,15 +72,34 @@ function Cart(props) {
         </div>
     );
 
-    return (
-        <Modal onClose={props.onClose}>
+    const cartModalContent = (
+        <>
             <div>{cartItems}</div>
             <div className={classes.total}>
                 <span>Total Amount</span>
                 <span>{totalAmount}</span>
             </div>
-            {isOrdering && <CheckoutForm onConfirm={submitOrderHandler} onCancel={props.onClose}/>}
+            {isOrdering && <CheckoutForm onConfirm={submitOrderHandler} onCancel={props.onClose} />}
             {!isOrdering && modalActions}
+        </>
+    )
+
+    const isSubmittingModalContent = (
+        <p> Sending order data...</p>
+    )
+
+    const didSubmitModalContent = (
+        <>
+            <p>Succesfully sent the order.</p>
+            <button className={classes["button--alt"]} onClick={props.onClose}>Close</button>
+        </>
+    )
+
+    return (
+        <Modal onClose={props.onClose}>
+            {!isSubmitting && !didSubmit && cartModalContent}
+            {isSubmitting && isSubmittingModalContent}
+            {!isSubmitting && didSubmit && didSubmitModalContent}
         </Modal>
     )
 }
