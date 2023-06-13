@@ -14,13 +14,13 @@ function AvailableMeals() {
 
     try {
 
-      const response = await fetch("https://food-order-app-1f0b9-default-rtdb.firebaseio.com/meals.json");
       setIsLoading(true);
+      const response = await fetch("https://food-order-app-1f0b9-default-rtdb.firebaseio.com/meals.json");
       setError(null);
 
       if (!response.ok) {
         throw new Error("Something went wrong");
-      }
+      } 
 
       const data = await response.json();
 
@@ -49,6 +49,14 @@ function AvailableMeals() {
     fetchMealsHandler();
   }, [fetchMealsHandler]);
 
+  if (isLoading) {
+    return (
+      <section className={classes.MealsLoading}>
+        <p>Meals are loading</p>
+      </section>
+    );
+  }
+
   const mealList = meals.map((meal) => {
     return <MealIteam
       key={meal.id}
@@ -59,6 +67,7 @@ function AvailableMeals() {
   return (
     <section className={classes.meals}>
       <Card>
+        {error ? <p>{error}</p> : <></>}
         <ul>
           {mealList}
         </ul>
